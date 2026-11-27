@@ -1,28 +1,73 @@
 <?php
 
-require('./PropertyConstant.php');
+namespace Pbo\Marketplace;
 
-use Pbo\Marketplace\produk;
+trait produk {
+    
+    //property
+    private string $kode;
+    private string $nama;
+    private int $harga;
+    private int $stok;
 
-// object
-$produk = new Produk ();
+    //constant
+    public const PAJAK = 0.11;
 
-$produk -> setKode('P0001')
-        -> setNama('Laptop')
-        -> setHarga(10000000)
-        -> setStok(5);
+    public function __construct(){
+    }
+    
+    //setter
+    public function setKode($kode){
+        $this->kode = $kode;
+        return $this;
+    }
 
-//hasil
-echo "Produk: ".$produk->getNama();
-echo "<br/>";
+    public function setNama($nama){
+        $this->nama = $nama;
+        return $this;
+    }
 
-echo "Harga: ".$produk->getHarga();
-echo "<br/>";
+    public function setHarga($harga){
+        if ($harga <= 0){
+            echo "Harga tidak boleh 0";
+            exit();
+        }
+        $this->harga = $harga;
+        return $this;
+    }
 
-echo "Stok: ".$produk->getStok();
-echo "<br/>";
+    public function setStok($stok){
+        if ($stok <= 0){
+            echo "Stok tidak tersedia";
+            exit();
+        }
+        $this->stok = $stok;
+        return $this;
+    }
 
-echo "Pajak: ". $produk->pajak()."%";
-echo "<br/>";
+    //getter
+    public function getKode(){
+        return $this->kode;
+    }
 
-echo "Total harga setelah pajak: Rp.".$produk->total();
+    public function getNama(){
+        return $this->nama;
+    }
+
+    public function getHarga(){
+        return "Rp.". $this->harga;
+    }
+
+    public function getStok(){
+        return $this->stok ."pcs";
+    }
+
+    public function pajak(){
+        return self::PAJAK * 100;
+    }
+
+    public function total(){
+        return $this->harga + ($this->harga * self::PAJAK);
+    }
+
+}
